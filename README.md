@@ -2,3 +2,9 @@
 Starting with a port of https://github.com/cquest/pynitel to TypeScript.
 
 Minimum NodeJS 23 (for direct typescript)
+
+
+# .env (example for MacOS)
+```
+MINITEL_PATH=/dev/tty.usbserial-0001
+```

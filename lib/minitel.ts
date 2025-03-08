@@ -26,10 +26,15 @@ export default class MinitelTS extends EventEmitter {
     this.store = MinitelTSState({name:'store'});
   }
 
-  init (path: string, baudRate:number = 1200): Promise<void> {
+  init (path: string | undefined = undefined, baudRate:number = 1200): Promise<void> {
+    if (!path && !process.env.MINITEL_PATH) {
+      console.error('No path defined!');
+      process.exit(1);
+    }
+
     return new Promise(async (resolve, reject) => {
       this.port = new SerialPort({ 
-        path, 
+        path: path || process.env.MINITEL_PATH || '', 
         baudRate, 
         dataBits: 7,
         parity: 'even',
@@ -81,7 +86,7 @@ export default class MinitelTS extends EventEmitter {
 
     await this.router.loadRoutes(routeDir);
     if (this.router.current === null) {
-      console.error('No route defined!');
+      console.error(`No route found at ${routeDir}!`);
       return;
     }
     
