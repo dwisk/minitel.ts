@@ -26,7 +26,7 @@ export default class MinitelTS extends EventEmitter {
     this.store = MinitelTSState({name:'store'});
   }
 
-  init (path: string | undefined = undefined, baudRate:number = 1200): Promise<void> {
+  init (path: string | undefined = undefined, baudRate:number | undefined = undefined): Promise<void> {
     if (!path && !process.env.MINITEL_PATH) {
       console.error('No path defined!');
       process.exit(1);
@@ -35,7 +35,7 @@ export default class MinitelTS extends EventEmitter {
     return new Promise(async (resolve, reject) => {
       this.port = new SerialPort({ 
         path: path || process.env.MINITEL_PATH || '', 
-        baudRate, 
+        baudRate: baudRate || parseInt(process.env.MINITEL_BAUDRATE || '1200'), 
         dataBits: 7,
         parity: 'even',
         stopBits: 1,
