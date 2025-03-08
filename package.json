@@ -1,0 +1,19 @@
+{
+    "scripts": {
+        "build": "tsc app.ts",
+        "start": "node app.ts"
+    },
+    "dependencies": {
+        "react": "^19.0.0",
+        "react-reconciler": "^0.31.0",
+        "serialport": "^13.0.0",
+        "typescript": "^5.8.2"
+    },
+    "devDependencies": {
+        "@types/node": "^22.13.10"
+    },
+    "type": "module",
+    "engines": {
+        "node": ">=23.0.0"
+    }
+}
