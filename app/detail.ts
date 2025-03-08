@@ -1,15 +1,16 @@
-import { Minitel } from "../lib/minitel.ts";
+import MinitelTS from "../lib/minitel.ts";
 
-export default async function screen(minitel:Minitel, state:any) {
-    minitel.setState({run: state.run ? state.run + 1 : 1});
-    minitel.cls();
-    minitel.pos(3, 5);
-    minitel.print(`Welcome to Minitel TS! ${state.run || 0}`);
+export default async function screen(minitel:MinitelTS) {
+    const { output } = minitel;
+    const { store, setStore } = minitel.store;
+    output.cls();
+    output.pos(3, 5);
+    output.print(`Welcome to Minitel TS! ${store.loop || 0}`);
 
-
-    await minitel.waitForKey();
+    await minitel.input.waitForKey();
+    setStore({userInput: ''})
     minitel.bip();
-    minitel.goto('index.ts');
+    minitel.router.goto('index.ts');
     
 }
 
