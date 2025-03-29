@@ -81,7 +81,7 @@ export default class MinitelTS extends EventEmitter {
     this.sendEsc(enable ? '\x3A\x6A\x43' : '\x3A\x6B\x43'); // Enable/disable scrolling
   }
 
-  async loop(routeDir: string = 'app', initialRoute: string = 'index.ts', initialStore: object = {}) {
+  async loop(routeDir: string = 'app', initialRoute: string = 'index', initialStore: object = {}) {
     console.log('Minitel loop started…')
 
     await this.router.loadRoutes(routeDir, initialRoute);

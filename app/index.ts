@@ -31,7 +31,7 @@ export default async function screen(minitel:MinitelTS, route:MinitelTSRoute) {
 
     minitel.bip();
     if (userInput === 'DETAIL') {
-       minitel.router.goto('detail.ts');
+       minitel.router.goto('detail');
     }
     
 }

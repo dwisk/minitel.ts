@@ -79,7 +79,7 @@ export default async function screen(minitel:MinitelTS, route:MinitelTSRoute) {
 
   // if DETAIL is entered, route to `detail.ts`
   if (userInput === 'DETAIL') {
-      minitel.router.goto('detail.ts');
+      minitel.router.goto('detail');
   }
 }
 ```
@@ -110,7 +110,7 @@ export default async function screen(minitel:MinitelTS) {
   minitel.bip();
 
   // go back to index
-  minitel.router.goto('index.ts');
+  minitel.router.goto('index');
 }
 ```
 
