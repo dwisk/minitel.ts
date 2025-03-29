@@ -19,3 +19,8 @@ export type MinitelTSColor = {
 };
 
 export type MinitelTSStateType = ReturnType<typeof MinitelTSState>;
+
+export type MinitelTSChoice = {
+  value: string;
+  label: string;
+}
