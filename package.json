@@ -6,8 +6,6 @@
     },
     "dependencies": {
         "dotenv": "^16.4.7",
-        "react": "^19.0.0",
-        "react-reconciler": "^0.31.0",
         "serialport": "^13.0.0",
         "typescript": "^5.8.2"
     },
@@ -21,5 +19,26 @@
     "exports": {
         ".": "./dist/minitel.js",
         "./types": "./dist/types.d.ts"
-    }
+    },
+    "version": "0.1.0-beta.2",
+    "description": "A port to typescript and extension of https://github.com/cquest/pynitel",
+    "main": "./dist/minitel.js",
+    "directories": {
+        "lib": "lib"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/dwisk/minitel.ts.git"
+    },
+    "keywords": [
+        "typescript",
+        "minitel"
+    ],
+    "author": "Amely Kling",
+    "license": "ISC",
+    "types": "./dist/minitel.d.ts",
+    "bugs": {
+        "url": "https://github.com/dwisk/minitel.ts/issues"
+    },
+    "homepage": "https://github.com/dwisk/minitel.ts#readme"
 }
