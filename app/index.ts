@@ -1,5 +1,5 @@
-import MinitelTS from "../lib/minitel.ts";
-import type { MinitelTSRoute } from "../lib/types";
+import MinitelTS from "../dist/minitel.js";
+import type { MinitelTSRoute } from "../dist/types";
 
 export const initialState =  {userInput: '...'};
 

@@ -1,4 +1,4 @@
-import MinitelTS from './lib/minitel.ts';
+import MinitelTS from './dist/minitel.js';
 import 'dotenv/config'
 
 // Example usage:

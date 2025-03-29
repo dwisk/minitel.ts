@@ -1,4 +1,4 @@
-import { MinitelTSState } from "./state.ts";
+import MinitelTSState from "./state.js";
 
 export type MinitelTSRoute = {
   path: string;

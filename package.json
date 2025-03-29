@@ -1,7 +1,8 @@
 {
+    "name": "minitel.ts",
     "scripts": {
-        "build": "tsc app.ts",
-        "start": "node app.ts"
+        "build": "cp ./lib/types.d.ts ./dist/ && tsc",
+        "start": "npm run build && node app.ts"
     },
     "dependencies": {
         "dotenv": "^16.4.7",
@@ -16,5 +17,9 @@
     "type": "module",
     "engines": {
         "node": ">=23.0.0"
+    },
+    "exports": {
+        ".": "./dist/minitel.js",
+        "./types": "./dist/types.d.ts"
     }
 }

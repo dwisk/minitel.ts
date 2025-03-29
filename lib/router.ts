@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import type { MinitelTSRoute } from './types.d.ts';
-import MinitelTSState from './state.ts';
+import MinitelTSState from './state.js';
 
 export default class MinitelTSRouter {
   private routes: MinitelTSRoute[];
@@ -15,7 +15,8 @@ export default class MinitelTSRouter {
 
   async loadRoutes(routeDir: string) {
     this.routes = [];
-    const appDir = path.join(import.meta.dirname, '..', routeDir);
+    const appDir = path.join(path.dirname(process.argv[1]), routeDir);
+    console.log(appDir)
     const files = fs.readdirSync(appDir);
     for (const file of files) {
       if (file.endsWith('.ts')) {

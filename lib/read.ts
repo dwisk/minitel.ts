@@ -1,5 +1,5 @@
-import MinitelTS from "./minitel.ts";
-import MinitelTSWrite from "./write.ts";
+import MinitelTS from "./minitel.js";
+import MinitelTSWrite from "./write.js";
 
 export default class MinitelTSRead {
 

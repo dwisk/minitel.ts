@@ -1,4 +1,4 @@
-import MinitelTS from "./minitel.ts";
+import MinitelTS from "./minitel.js";
 
 export default class MinitelTSWrite {
 

@@ -1,4 +1,4 @@
-import MinitelTS from "../lib/minitel.ts";
+import MinitelTS from "../dist/minitel.js";
 
 export default async function screen(minitel:MinitelTS) {
     const { output } = minitel;

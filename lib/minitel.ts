@@ -2,10 +2,10 @@ import { SerialPort } from 'serialport';
 import EventEmitter from 'events';
 
 import type { MinitelTSColor } from './types.d.ts';
-import MinitelTSRouter from './router.ts';
-import MinitelTSRead from './read.ts';
-import MinitelTSWrite from './write.ts';
-import MinitelTSState from './state.ts';
+import MinitelTSRouter from './router.js';
+import MinitelTSRead from './read.js';
+import MinitelTSWrite from './write.js';
+import MinitelTSState from './state.js';
 
 export default class MinitelTS extends EventEmitter {
   public colors: MinitelTSColor;
