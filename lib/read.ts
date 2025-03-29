@@ -1,4 +1,5 @@
 import MinitelTS from "./minitel.js";
+import type { MinitelTSChoice } from "./types.js";
 import MinitelTSWrite from "./write.js";
 
 export default class MinitelTSRead {
@@ -96,13 +97,15 @@ export default class MinitelTSRead {
     output.print(": ");
   }
 
-  here(label = 'Input'): Promise<string> {
+  here(label:string|undefined = undefined, quickCharacters: string[] = []): Promise<string> {
     // Position the cursor at the start of the input field
     let inputText = "";
     this.currentInputLength = 0; // reset input length
     const output = this.minitel.output;
     
-    this.label(label);
+    if (label) {
+      this.label(label);
+    }
     
     this.cursor(true);
 
@@ -116,6 +119,12 @@ export default class MinitelTSRead {
   
         for (let i = 0; i < str.length; i++) {
           let char = str[i];
+
+          if (quickCharacters.includes(char)) {
+            this.minitel.removeListener('data', onData);
+            this.cursor(false);
+            resolve(char);
+          }
   
           if (funcBuffer) {
             // We're in a function key sequence; add the new char
@@ -192,6 +201,90 @@ export default class MinitelTSRead {
         }
       };
       this.minitel.on('data', onData);
+    });
+  }
+
+  // herenow only supports 1 character and directyl returns
+  hereNow(label:string|undefined = undefined, allowedCharacters: string[]): Promise<string> {
+    // Position the cursor at the start of the input field
+    let inputText = "";
+    this.currentInputLength = 0; // reset input length
+    const output = this.minitel.output;
+    if (label) {
+      this.label(label);
+    }
+    this.cursor(true);
+    return new Promise((resolve, reject) => {
+      const onData = (data: { toString: (arg0: string) => any; }) => {
+        // Convert using latin1 since Minitel uses ISO-8859-1
+        let str = data.toString("latin1");
+  
+        for (let i = 0; i < str.length; i++) {
+          let char = str[i];
+          if (allowedCharacters.includes(char)) {
+            this.minitel.removeListener('data', onData);
+            this.cursor(false);
+            resolve(char);
+          } else {
+            // For extra characters beyond the limit, beep
+            output.backspace();
+            output.print(" "); // blank the last character
+            output.backspace();
+            this.minitel.bip();
+          }
+        }
+      };
+      this.minitel.on('data', onData);
+      
+    });
+  };
+
+  multipleCoice(label:string, choices: MinitelTSChoice[], allowManualAnswer: boolean = false): Promise<MinitelTSChoice> {
+    // Position the cursor at the start of the input field
+    let inputText = "";
+    this.currentInputLength = 0; // reset input length
+    const output = this.minitel.output;
+    output.print(label, this.minitel.colors.bleu);
+    output.newLine();
+    choices.forEach((choice, index) => {
+      output.inverse(true);
+      output.print(`[${index + 1}]`);
+      output.inverse(false);
+      output.print(` ${choice.label}\n`);
+      output.startLine();
+    });
+
+    output.newLine();
+
+    return new Promise(async (resolve, reject) => {
+      let choice;
+      if (allowManualAnswer) {
+        try {
+          choice = await this.here(undefined, choices.map((c,i) => (i+1).toString() ));
+        } catch (error) {
+          reject(error);
+          return;
+        }
+      } else {
+        choice = await this.hereNow(undefined, choices.map((c,i) => (i+1).toString() ));
+      }
+
+      // check if the choice is a number
+      if (isNaN(parseInt(choice, 10))) {
+        resolve({
+          value: choice,
+          label: choice
+        });
+      } else {
+        // if it is a number, check if it is a valid index
+        const choiceIndex = parseInt(choice, 10) - 1;
+        if (choiceIndex >= 0 && choiceIndex < choices.length) {
+          resolve(choices[choiceIndex]);
+        } else {
+          reject(new Error('Invalid choice'));
+        }
+      }
+        
     });
   }
 

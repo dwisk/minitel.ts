@@ -61,9 +61,21 @@ export default class MinitelTSWrite {
   }
 
 
-  print(text: string) {
+  print(text: string, color:number|undefined = undefined) {
     const encodedText = Buffer.from(this.convertAccents(text), "latin1"); 
-    this.minitel.send(encodedText);
+    if (color) { this.foreColor(color)};
+    
+    // split \n and send each line, handling consecutive \n\n
+    const lines = encodedText.toString().split('\n');
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      const encodedLine = Buffer.from(this.convertAccents(line), "latin1");
+      this.minitel.send(encodedLine);
+      // new line only between lines
+      if (i !== lines.length - 1) this.newLine();
+    }
+    
+    if (color) { this.foreColor(this.minitel.colors.blanc)};
   }
 
   convertAccents(text: string) {
