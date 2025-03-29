@@ -127,10 +127,20 @@ export default class MinitelTSRead {
                 this.cursor(false);
                 resolve(inputText);
 
-                // SOMMAIRE
               } else if (funcBuffer === '\x13F') {
-                // reject('<KEY:SOMMAIRE>');
                 reject(new Error('KEY:SOMMAIRE'));
+
+              } else if (funcBuffer === '\x13H') {
+                reject(new Error('KEY:SUITE'));
+
+              } else if (funcBuffer === '\x13D') {
+                reject(new Error('KEY:GUIDE'));
+
+              } else if (funcBuffer === '\x13B') {
+                reject(new Error('KEY:RETOUR'));
+
+              } else if (funcBuffer === '\x13C') {
+                reject(new Error('KEY:REPETITION'));
 
               } else if (funcBuffer === '\x13\x45') {
                 // Annulation: clear the input area
