@@ -81,10 +81,10 @@ export default class MinitelTS extends EventEmitter {
     this.sendEsc(enable ? '\x3A\x6A\x43' : '\x3A\x6B\x43'); // Enable/disable scrolling
   }
 
-  async loop(routeDir: string = 'app') {
+  async loop(routeDir: string = 'app', initialRoute: string = 'index.ts') {
     console.log('Minitel loop started…')
 
-    await this.router.loadRoutes(routeDir);
+    await this.router.loadRoutes(routeDir, initialRoute);
     if (this.router.current === null) {
       console.error(`No route found at ${routeDir}!`);
       return;

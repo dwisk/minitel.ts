@@ -5,7 +5,7 @@ import type { MinitelTSRoute } from './types.d.ts';
 import MinitelTSState from './state.js';
 
 export default class MinitelTSRouter {
-  private routes: MinitelTSRoute[];
+  public routes: MinitelTSRoute[];
   public current: MinitelTSRoute | null;
 
   constructor() {
@@ -13,7 +13,7 @@ export default class MinitelTSRouter {
     this.current = null;
   }
 
-  async loadRoutes(routeDir: string) {
+  async loadRoutes(routeDir: string, initialRoute: string = 'index.ts') {
     this.routes = [];
     const appDir = path.join(path.dirname(process.argv[1]), routeDir);
     console.log(appDir)
@@ -22,10 +22,15 @@ export default class MinitelTSRouter {
       if (file.endsWith('.ts')) {
         const p = path.join(appDir, file);
         const a = await import(p);
-        this.routes.push({ path: file, loop: a.default, state: MinitelTSState({initial:a.initialState}) });
+        this.routes.push({
+          path: file,
+          name: a.name || file.replace('.ts', ''),
+          loop: a.default,
+          state: MinitelTSState({initial:a.initialState})
+        });
       }
     }
-    this.current = this.routes.find(r => r.path === 'index.ts') || null;
+    this.current = this.routes.find(r => r.path === initialRoute) || null;
     console.log('Routes loaded:', this.routes);
   }
 

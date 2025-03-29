@@ -2,6 +2,7 @@ import MinitelTSState from "./state.js";
 
 export type MinitelTSRoute = {
   path: string;
+  name: string;
   loop: Function;
   state: MinitelTSStateType;
 };
