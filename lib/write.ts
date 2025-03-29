@@ -88,7 +88,11 @@ export default class MinitelTSWrite {
       .replace(/ç/g, '\x19\x4Bc')
       .replace(/ô/g, '\x19\x43o')
       .replace(/û/g, '\x19\x43u')
-      .replace(/ü/g, '\x19\x48u');
+      .replace(/ü/g, '\x19\x48u')
+      .replace(/ö/g, '\x19\x48o')
+      .replace(/ä/g, '\x19\x48a')
+      .replace(/ü/g, '\x19\x48u')
+      .replace(/ß/g, '\x19\x4Bs')
   }
 
 }
