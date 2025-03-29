@@ -23,6 +23,18 @@ export default class MinitelTSWrite {
     }
   }
 
+  newLine() {
+    this.minitel.sendChr(10); // line feed
+    this.minitel.sendChr(13); // begining of current line
+  }
+  startLine() {
+    this.minitel.sendChr(13); // begining of current line
+  }
+
+  backspace() {
+    this.minitel.sendChr(8); // backspace
+  }
+
   backColor(color: number) {
     this.minitel.sendEsc(String.fromCharCode(80 + color));
   }
