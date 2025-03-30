@@ -16,6 +16,7 @@ Create a `.env` file, and set path & baudrate
 ```bash
 MINITEL_PATH=/dev/tty.usbserial-0001 # MacOS
 MINITEL_BAUDRATE=1200
+MINITEL_SILENT=false # disable beeps
 ```
 
 Create a `app.ts` file

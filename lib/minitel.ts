@@ -74,7 +74,9 @@ export default class MinitelTS extends EventEmitter {
   }
   
   bip() {
-    this.sendChr(7); // Beep sound
+    if (process.env.MINITEL_SILENT !== 'true') {
+      this.sendChr(7); // Beep sound
+    }
   }
 
   scroll(enable = true) {
