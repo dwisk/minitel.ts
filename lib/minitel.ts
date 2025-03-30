@@ -1,5 +1,6 @@
 import { SerialPort } from 'serialport';
 import EventEmitter from 'events';
+import 'colors';
 
 import type { MinitelTSColor } from './types.d.ts';
 import MinitelTSRouter from './router.js';
@@ -32,10 +33,28 @@ export default class MinitelTS extends EventEmitter {
       process.exit(1);
     }
 
+    const baud = baudRate || parseInt(process.env.MINITEL_BAUDRATE || '1200');
+    return new Promise(async (resolve, reject) => {
+      await this.openConnection(path, 1200);
+      console.log('Connected to Minitel at 1200 baud rate'.green);
+      if (baud === 4800) {
+        console.log('Switching to 4800 baud rate...'.gray);
+        this.sendEsc("\x1b\x3a\x6b\x76");
+        this.port?.close();
+        await this.openConnection(path, baud);
+        console.log('Connected to Minitel at 4800 baud rate'.green);
+        resolve();
+      } else {
+        resolve();
+      }
+    });
+  }
+
+  private openConnection(path: string | undefined, baudRate: number): Promise<void> {
     return new Promise(async (resolve, reject) => {
       this.port = new SerialPort({ 
         path: path || process.env.MINITEL_PATH || '', 
-        baudRate: baudRate || parseInt(process.env.MINITEL_BAUDRATE || '1200'), 
+        baudRate,
         dataBits: 7,
         parity: 'even',
         stopBits: 1,
@@ -43,6 +62,7 @@ export default class MinitelTS extends EventEmitter {
       }, (err) => {
         if (err) {
           console.error('Error opening port:', err.message);
+          reject(err);
         }
       });
       this.port.on('open', () => {
