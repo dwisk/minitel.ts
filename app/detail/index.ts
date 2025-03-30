@@ -1,4 +1,4 @@
-import MinitelTS from "../dist/minitel.js";
+import MinitelTS from "../../dist/minitel.js";
 
 export default async function screen(minitel:MinitelTS) {
     const { output } = minitel;
@@ -10,7 +10,7 @@ export default async function screen(minitel:MinitelTS) {
     await minitel.input.waitForKey();
     setStore({userInput: ''})
     minitel.bip();
-    minitel.router.goto('index.ts');
+    minitel.router.goto('index');
     
 }
 

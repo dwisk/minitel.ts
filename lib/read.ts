@@ -214,6 +214,7 @@ export default class MinitelTSRead {
       this.label(label);
     }
     this.cursor(true);
+    let funcBuffer = ""; // Buffer to catch function key sequences (start with \x13)
     return new Promise((resolve, reject) => {
       const onData = (data: { toString: (arg0: string) => any; }) => {
         // Convert using latin1 since Minitel uses ISO-8859-1
@@ -225,12 +226,47 @@ export default class MinitelTSRead {
             this.minitel.removeListener('data', onData);
             this.cursor(false);
             resolve(char);
+          }
+          
+          if (funcBuffer) {
+            // We're in a function key sequence; add the new char
+            funcBuffer += char;
+            if (funcBuffer.length === 2) {
+              if (funcBuffer === '\x13\x41') {
+                reject(new Error('KEY:ENVOI'));
+              } else if (funcBuffer === '\x13F') {
+                reject(new Error('KEY:SOMMAIRE'));
+              } else if (funcBuffer === '\x13H') {
+                reject(new Error('KEY:SUITE'));
+              } else if (funcBuffer === '\x13D') {
+                reject(new Error('KEY:GUIDE'));
+              } else if (funcBuffer === '\x13B') {
+                reject(new Error('KEY:RETOUR'));
+              } else if (funcBuffer === '\x13C') {
+                reject(new Error('KEY:REPETITION'));
+              } else if (funcBuffer === '\x13\x45') {
+                reject(new Error('KEY:ANNULATION'));
+              } else if (funcBuffer === '\x13\x47') {
+                reject(new Error('KEY:RETOUR'));
+              } else {
+                // Unrecognized sequence, beep as needed
+                this.minitel.bip();
+              }
+              // Reset the function key buffer after processing a two-byte sequence
+              funcBuffer = "";
+            }
+            continue;
           } else {
             // For extra characters beyond the limit, beep
             output.backspace();
             output.print(" "); // blank the last character
             output.backspace();
             this.minitel.bip();
+          }
+
+          if (char === '\x13') {
+            // Start a function key sequence
+            funcBuffer = char;
           }
         }
       };
@@ -258,15 +294,15 @@ export default class MinitelTSRead {
 
     return new Promise(async (resolve, reject) => {
       let choice;
-      if (allowManualAnswer) {
-        try {
-          choice = await this.here(undefined, choices.map((c,i) => (i+1).toString() ));
-        } catch (error) {
-          reject(error);
-          return;
+      try {
+        if (allowManualAnswer) {
+            choice = await this.here(undefined, choices.map((c,i) => (i+1).toString() ));
+        } else {
+          choice = await this.hereNow(undefined, choices.map((c,i) => (i+1).toString() ));
         }
-      } else {
-        choice = await this.hereNow(undefined, choices.map((c,i) => (i+1).toString() ));
+      } catch (error) {
+        reject(error);
+        return;
       }
 
       // check if the choice is a number
