@@ -39,7 +39,7 @@ export default class MinitelTS extends EventEmitter {
       console.log('Connected to Minitel at 1200 baud rate'.green);
       if (baud === 4800) {
         console.log('Switching to 4800 baud rate...'.gray);
-        this.sendEsc("\x1b\x3a\x6b\x76");
+        this.send("\x1b\x3a\x6b\x76");
         this.port?.close();
         await this.openConnection(path, baud);
         console.log('Connected to Minitel at 4800 baud rate'.green);
