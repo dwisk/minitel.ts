@@ -1,5 +1,6 @@
 {
     "name": "minitel.ts",
+    "version": "0.1.1",
     "scripts": {
         "build": "cp ./lib/types.d.ts ./dist/ && tsc",
         "start": "npm run build && node app.ts"
@@ -23,7 +24,6 @@
         "./write": "./dist/write.js",
         "./read": "./dist/read.js"
     },
-    "version": "0.1.0",
     "description": "A port to typescript and extension of https://github.com/cquest/pynitel",
     "main": "./dist/minitel.js",
     "directories": {
